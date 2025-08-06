@@ -11,6 +11,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Build stage"
                     ls -la
                     node --version
                     npm --version
@@ -28,12 +29,19 @@ pipeline {
                 }
             }
             steps {
+                echo "Test stage"
                 sh '''
                     test -d build/
                     test -f build/index.html
                     npm test
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            junit 'test-results/junit.xml'
         }
     }
 }
